@@ -1,0 +1,47 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Account {
+  """Example field (placeholder)"""
+  id: String!
+
+  """Example field (placeholder)"""
+  insertedAt: DateTime!
+
+  """Example field (placeholder)"""
+  name: String!
+
+  """Example field (placeholder)"""
+  token: String!
+
+  """Example field (placeholder)"""
+  updatedAt: DateTime!
+}
+
+input CreateAccountInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Mutation {
+  createAccount(createAccountInput: CreateAccountInput!): Account!
+  removeAccount(id: Int!): Account!
+  updateAccount(updateAccountInput: UpdateAccountInput!): Account!
+}
+
+type Query {
+  account(id: Int!): Account!
+  accounts: [Account!]!
+}
+
+input UpdateAccountInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
