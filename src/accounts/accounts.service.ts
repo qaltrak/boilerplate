@@ -1,26 +1,55 @@
+import {
+  EntityRepository,
+  MikroORM,
+  QueryOrder,
+  UseRequestContext,
+  wrap,
+} from '@mikro-orm/core';
+import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { CreateAccountInput } from './dto/create-account.input';
 import { UpdateAccountInput } from './dto/update-account.input';
+import { Account } from './entities/account.entity';
 
 @Injectable()
 export class AccountsService {
-  create(createAccountInput: CreateAccountInput) {
-    return 'This action adds a new account';
+  constructor(
+    @InjectRepository(Account)
+    private readonly accountRepository: EntityRepository<Account>,
+    private readonly orm: MikroORM,
+  ) {}
+  @UseRequestContext()
+  async create(createAccountInput: CreateAccountInput) {
+    const account = this.accountRepository.create({
+      name: createAccountInput.name,
+    });
+    await this.accountRepository.persistAndFlush(account);
+    return account;
   }
 
+  @UseRequestContext()
   findAll() {
-    return `This action returns all accounts`;
+    return this.accountRepository.findAll({
+      orderBy: { name: QueryOrder.DESC },
+      limit: 20,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} account`;
+  @UseRequestContext()
+  findOne(id: string) {
+    return this.accountRepository.findOneOrFail({ id });
   }
 
-  update(id: number, updateAccountInput: UpdateAccountInput) {
-    return `This action updates a #${id} account`;
+  @UseRequestContext()
+  async update(id: string, updateAccountInput: UpdateAccountInput) {
+    const account = await this.accountRepository.findOne({ id });
+    wrap(account).assign(updateAccountInput);
+    await this.accountRepository.flush();
+    return account;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} account`;
+  @UseRequestContext()
+  remove(id: string) {
+    return this.accountRepository.nativeDelete({ id });
   }
 }
