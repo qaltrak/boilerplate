@@ -7,21 +7,16 @@ type Account {
   id: String!
 
   """Example field (placeholder)"""
-  insertedAt: DateTime!
-
-  """Example field (placeholder)"""
   name: String!
 
   """Example field (placeholder)"""
   token: String!
 
   """Example field (placeholder)"""
-  updatedAt: DateTime!
-}
+  insertedAt: DateTime!
 
-input CreateAccountInput {
   """Example field (placeholder)"""
-  exampleField: Int!
+  updatedAt: DateTime
 }
 
 """
@@ -29,19 +24,24 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Mutation {
-  createAccount(createAccountInput: CreateAccountInput!): Account!
-  removeAccount(id: Int!): Account!
-  updateAccount(updateAccountInput: UpdateAccountInput!): Account!
+type Query {
+  accounts: [Account!]!
+  account(id: String!): Account!
 }
 
-type Query {
-  account(id: Int!): Account!
-  accounts: [Account!]!
+type Mutation {
+  createAccount(createAccountInput: CreateAccountInput!): Account!
+  updateAccount(updateAccountInput: UpdateAccountInput!): Account!
+  removeAccount(id: String!): Account!
+}
+
+input CreateAccountInput {
+  """Account name"""
+  name: String!
 }
 
 input UpdateAccountInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  """Account name"""
+  name: String
+  id: String!
 }

@@ -7,16 +7,16 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AccountsModule } from './accounts/accounts.module';
-import OrmConfig from './mikro-orm.config';
+import ormConfig from './mikro-orm.config';
 
 @Module({
   imports: [
-    MikroOrmModule.forRoot(OrmConfig),
+    MikroOrmModule.forRoot(ormConfig),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      sortSchema: true,
       playground: false,
+      introspection: true,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
     AccountsModule,
